@@ -1,0 +1,476 @@
+@charset "UTF-8";
+
+:root {
+    --primary-color: #FF0B55;
+    --primary-light: #FFDEDE;
+    --text-color: #333333;
+    --text-light: #666666;
+    --white: #FFFFFF;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --error-color: #dc3545;
+    --success-color: #28a745;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: #f5f5f5;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    perspective: 2000px;
+}
+
+.container {
+    width: 100%;
+    max-width: 1000px;
+    min-height: 750px;
+    display: flex;
+    position: relative;
+    overflow-y: auto;
+    max-height: 90vh;
+}
+
+.left-side {
+    flex: 0.8;
+    background: var(--primary-light);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    border-radius: 20px 0 0 20px;
+    box-shadow: var(--shadow);
+    z-index: 1;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.6s ease;
+}
+
+.welcome-content {
+    position: absolute;
+    width: 90%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+    justify-content: center;
+}
+
+.welcome-text {
+    margin-bottom: 30px;
+    margin-top: 200px;
+    z-index: 1;
+    opacity: 0;
+    animation: fadeInUp 0.8s ease forwards;
+}
+
+.welcome-link {
+    display: inline-block;
+    padding: 12px 30px;
+    background-color: var(--white);
+    color: var(--primary-color);
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: 600;
+    margin-top: 20px;
+    transition: all 0.3s ease;
+    border: 2px solid var(--white);
+    cursor: pointer;
+    opacity: 0;
+    animation: fadeIn 0.8s ease forwards 0.9s;
+}
+
+.welcome-link:hover {
+    background-color: transparent;
+    color: var(--white);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.welcome-text h1 {
+    font-size: 2em;
+    color: var(--text-color);
+    margin-bottom: 10px;
+    transform: translateY(20px);
+    opacity: 0;
+    animation: slideUp 0.8s ease forwards 0.3s;
+}
+
+.welcome-text h1 span {
+    color: var(--primary-color);
+    display: block;
+    font-size: 1em;
+    transform: translateY(20px);
+    opacity: 0;
+    animation: slideUp 0.8s ease forwards 0.6s;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.right-side-container {
+    flex: 1.2;
+    position: relative;
+    transform-style: preserve-3d;
+    perspective: inherit;
+}
+
+.form-panel {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    padding: 40px;
+    background: var(--white);
+    border-radius: 0 20px 20px 0;
+    box-shadow: var(--shadow);
+    backface-visibility: hidden;
+}
+
+/* Enhanced page edge effects */
+.form-panel::before,
+.form-panel::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 30px;
+    pointer-events: none;
+}
+
+.form-panel::before {
+    left: 0;
+    background: linear-gradient(to right,
+        rgba(0, 0, 0, 0.1),
+        rgba(0, 0, 0, 0.05) 45%,
+        transparent 100%);
+    transform: translateX(-15px);
+    border-radius: 2px;
+}
+
+.form-panel::after {
+    left: 0;
+    background: linear-gradient(to right,
+        rgba(255, 255, 255, 0.2),
+        transparent 100%);
+    transform-origin: left center;
+    transition: opacity 0.6s ease-out;
+    opacity: 0;
+}
+
+.form-panel:hover::after {
+    opacity: 1;
+}
+
+/* Add subtle paper texture */
+.form-panel {
+    background-image: 
+        linear-gradient(45deg, 
+            rgba(255,255,255, 0.2) 25%, 
+            transparent 25%, 
+            transparent 75%, 
+            rgba(255,255,255, 0.2) 75%, 
+            rgba(255,255,255, 0.2)),
+        linear-gradient(45deg, 
+            rgba(255,255,255, 0.2) 25%, 
+            transparent 25%, 
+            transparent 75%, 
+            rgba(255,255,255, 0.2) 75%, 
+            rgba(255,255,255, 0.2));
+    background-size: 60px 60px;
+    background-position: 0 0, 30px 30px;
+    background-color: var(--white);
+}
+
+.form-container {
+    max-width: 400px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px 15px;
+    height: 100%;
+    overflow-y: auto;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+}
+
+.form-container::-webkit-scrollbar {
+    width: 4px;
+    background-color: transparent;
+}
+
+.form-container::-webkit-scrollbar-track {
+    background: transparent;
+    margin: 10px 0;
+}
+
+.form-container::-webkit-scrollbar-thumb {
+    background-color: var(--primary-color);
+    border-radius: 20px;
+    opacity: 0.5;
+}
+
+.form-container:hover::-webkit-scrollbar-thumb {
+    opacity: 1;
+}
+
+.form-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.form-header h2 {
+    font-size: 2em;
+    color: var(--text-color);
+    margin-bottom: 10px;
+}
+
+.form-header p {
+    color: var(--text-light);
+}
+
+.form-group {
+    margin-bottom: 14px;
+    position: relative;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--text-color);
+    font-weight: 500;
+    font-size: 0.9em;
+    transition: all 0.3s ease;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1.5px solid #E5E7EB;
+    border-radius: 8px;
+    font-size: 0.95em;
+    transition: all 0.3s ease;
+    background-color: #FAFAFA;
+}
+
+.form-group input:focus {
+    border-color: var(--primary-color);
+    background-color: var(--white);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(255, 11, 85, 0.1);
+}
+
+.form-group input:hover {
+    border-color: #D1D5DB;
+    background-color: var(--white);
+}
+
+.form-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-light);
+}
+
+.forgot-password {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 12px;
+    background: var(--primary-color);
+    color: var(--white);
+    border: none;
+    border-radius: 8px;
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.submit-btn:hover {
+    background: #d60046;
+    transform: translateY(-2px);
+}
+
+.toggle-form {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.toggle-form p {
+    color: var(--text-light);
+}
+
+.toggle-form a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+/* Add custom styling for file input */
+.file-input {
+    padding: 8px;
+    border: 1.5px dashed #E5E7EB;
+    border-radius: 8px;
+    width: 100%;
+    cursor: pointer;
+    background-color: #FAFAFA;
+}
+
+.file-input:hover {
+    border-color: var(--primary-color);
+    background-color: var(--white);
+}
+
+/* Add asterisk for required fields */
+.form-group label[for="username"]::after,
+.form-group label[for="password"]::after,
+.form-group label[for="confirmPassword"]::after,
+.form-group label[for="email"]::after,
+.form-group label[for="fullName"]::after,
+.form-group label[for="name"]::after {
+    content: "*";
+    color: var(--primary-color);
+    margin-left: 4px;
+}
+
+/* Optional fields styling */
+.form-group input:not([required]) {
+    border-style: dashed;
+}
+
+.form-group input:not([required]):focus {
+    border-style: solid;
+}
+
+/* Add error and success message styling */
+.alert {
+    margin: 15px 0;
+    padding: 15px 20px;
+    border-radius: 8px;
+    font-size: 0.95em;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    animation: slideIn 0.3s ease-out;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.alert i {
+    font-size: 1.2em;
+}
+
+.alert-error {
+    background-color: rgba(220, 53, 69, 0.1);
+    color: var(--error-color);
+    border: 1px solid rgba(220, 53, 69, 0.2);
+}
+
+.alert-success {
+    background-color: rgba(40, 167, 69, 0.1);
+    color: var(--success-color);
+    border: 1px solid rgba(40, 167, 69, 0.2);
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Add hover effect for alerts */
+.alert:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+/* Add responsive styling for alerts */
+@media (max-width: 768px) {
+    .alert {
+        margin: 10px 0;
+        padding: 12px 15px;
+        font-size: 0.9em;
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        min-height: auto;
+    }
+
+    .left-side {
+        border-radius: 20px 20px 0 0;
+        padding: 30px 20px;
+    }
+
+    .right-side-container {
+        min-height: 600px;
+    }
+
+    .form-panel {
+        position: relative;
+        border-radius: 0 0 20px 20px;
+        height: auto;
+    }
+    
+    .form-panel::before,
+    .form-panel::after {
+        width: 20px;
+        transform: translateX(-10px);
+    }
+}

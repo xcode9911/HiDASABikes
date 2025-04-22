@@ -1,0 +1,411 @@
+  :root {
+            --primary: #FF0B55;
+            --primary-dark: #CF0F47;
+            --secondary: #1A1A1A;
+            --accent: #FFD700;
+            --text-light: #FFFFFF;
+            --text-dark: #1A1A1A;
+            --background: #F5F5F5;
+            --card-bg: #FFFFFF;
+            --gradient-primary: linear-gradient(135deg, #FF0B55, #CF0F47);
+            --gradient-dark: linear-gradient(135deg, #1A1A1A, #333333);
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 8px rgba(0,0,0,0.12);
+            --shadow-lg: 0 8px 16px rgba(0,0,0,0.15);
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 16px;
+            --header-height: 80px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: var(--background);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Hero Slider Styles */
+        .hero-slider {
+        
+            width: 100%;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .swiper-container {
+            width: 100%;
+            height: 100%;
+        }
+
+        .swiper-slide {
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            position: relative;
+        }
+
+        .slide-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.7), rgba(0,0,0,0.2));
+            z-index: 1;
+        }
+
+        .slide-content {
+            position: relative;
+            z-index: 2;
+            max-width: 600px;
+            padding: 0 2rem;
+            margin-left: 8%;
+            color: var(--text-light);
+        }
+
+        .slide-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .slide-description {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease 0.2s, transform 0.8s ease 0.2s;
+        }
+
+        .swiper-slide-active .slide-title,
+        .swiper-slide-active .slide-description {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .swiper-button-next,
+        .swiper-button-prev {
+            color: var(--primary) !important;
+        }
+
+        .swiper-pagination-bullet {
+            width: 12px;
+            height: 12px;
+            background: white;
+            opacity: 0.5;
+        }
+
+        .swiper-pagination-bullet-active {
+            opacity: 1;
+            background: var(--primary);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            border-radius: var(--radius-md);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease 0.4s, transform 0.8s ease 0.4s, background 0.3s ease;
+        }
+
+        .swiper-slide-active .btn {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: var(--text-light);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* Welcome Section */
+        .welcome-section {
+            padding: 4rem 0;
+            background: var(--card-bg);
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 2rem;
+        }
+
+        .welcome-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .welcome-card {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            text-align: center;
+        }
+
+        .welcome-card i {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        /* Featured Bikes */
+        .featured-bikes {
+            padding: 4rem 0;
+            background: var(--background);
+        }
+
+        .bike-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .bike-card {
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+        }
+
+        .bike-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .bike-details {
+            padding: 1.5rem;
+        }
+
+        .bike-brand {
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .bike-name {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .bike-specs {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .spec-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .spec-item i {
+            color: var(--primary);
+        }
+
+        .bike-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .bike-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        /* Choose Your Ride */
+        .choose-ride {
+            padding: 4rem 0;
+            background: var(--card-bg);
+        }
+
+        .ride-categories {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .category-card {
+            text-align: center;
+            padding: 2rem;
+            background: var(--background);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+        }
+
+        .category-card i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        /* Stats Section */
+        .stats-section {
+            padding: 4rem 0;
+            background: var(--gradient-dark);
+            color: var(--text-light);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .stat-item i {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        /* About Section */
+        .about-section {
+            padding: 4rem 0;
+            background: var(--background);
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-image {
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+        }
+
+        .about-image img {
+            width: 100%;
+            height: auto;
+        }
+
+        /* Contact Section */
+        .contact-section {
+            padding: 4rem 0;
+            background: var(--card-bg);
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+
+        .contact-info {
+            background: var(--background);
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+        }
+
+        .contact-form {
+            background: var(--background);
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: var(--radius-md);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .slide-title {
+                font-size: 3rem;
+            }
+            
+            .about-content,
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .welcome-grid,
+            .ride-categories,
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .slide-title {
+                font-size: 2.5rem;
+            }
+            
+            .slide-content {
+                margin-left: 5%;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .slide-title {
+                font-size: 2rem;
+            }
+            
+            .slide-description {
+                font-size: 1rem;
+            }
+            
+            .btn {
+                padding: 0.8rem 1.5rem;
+            }
+        }
