@@ -121,7 +121,7 @@
             background: var(--primary);
         }
 
-        .btn {
+        .explorebutton {
             display: inline-block;
             padding: 1rem 2rem;
             border-radius: var(--radius-md);
@@ -138,12 +138,12 @@
             transform: translateY(0);
         }
 
-        .btn-primary {
+        .explorebutton {
             background: var(--primary);
             color: var(--text-light);
         }
 
-        .btn-primary:hover {
+        .explorebutton:hover {
             background: var(--primary-dark);
             transform: translateY(-2px);
         }
@@ -264,23 +264,54 @@
 
         .ride-categories {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1.5rem;
             margin-top: 2rem;
         }
 
         .category-card {
+            background: var(--card-bg);
+            padding: 1.5rem 1rem;
+            border-radius: var(--radius-md);
             text-align: center;
-            padding: 2rem;
-            background: var(--background);
-            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: var(--text-dark);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 140px;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
             box-shadow: var(--shadow-md);
+            background: linear-gradient(to bottom right, #fff, #f8f8f8);
+            border: 1px solid rgba(255, 11, 85, 0.2);
         }
 
         .category-card i {
-            font-size: 3rem;
+            font-size: 2rem;
             color: var(--primary);
-            margin-bottom: 1rem;
+            margin-bottom: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .category-card:hover i {
+            transform: scale(1.2);
+        }
+
+        .category-card h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+
+        .category-card p {
+            font-size: 0.85rem;
+            color: #777;
         }
 
         /* Stats Section */
@@ -408,4 +439,49 @@
             .btn {
                 padding: 0.8rem 1.5rem;
             }
+        }
+
+        /* Error message styling */
+        .error-container {
+            width: 100%;
+            padding: 10px 0;
+            background-color: #fff3f3;
+            position: relative;
+            z-index: 100;
+        }
+
+        .error-message {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px 20px;
+            background-color: #fff;
+            border-left: 4px solid #ff3131;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+        }
+
+        .error-message i.fa-exclamation-triangle {
+            color: #ff3131;
+            font-size: 1.5rem;
+            margin-right: 15px;
+        }
+
+        .error-message p {
+            flex: 1;
+            margin: 0;
+            color: #333;
+        }
+
+        .close-error {
+            background: none;
+            border: none;
+            color: #999;
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 5px;
+        }
+
+        .close-error:hover {
+            color: #333;
         }

@@ -114,7 +114,7 @@
             align-items: center;
         }
 
-        .btn {
+        .button {
             padding: 0.75rem 1.5rem;
             border-radius: var(--radius-md);
             font-weight: 500;
@@ -126,24 +126,24 @@
             gap: 0.5rem;
         }
 
-        .btn-primary {
+        .button-primary {
             background: var(--gradient-primary);
             color: var(--text-light);
             border: none;
         }
 
-        .btn-primary:hover {
+        .button-primary:hover {
             transform: translateY(-2px);
             box-shadow: var(--shadow-md);
         }
 
-        .btn-outline {
+        .button-outline {
             border: 2px solid var(--primary);
             color: var(--primary);
             background: transparent;
         }
 
-        .btn-outline:hover {
+        .button-outline:hover {
             background: rgba(255, 11, 85, 0.1);
             transform: translateY(-2px);
         }
@@ -277,11 +277,8 @@
                                 <a href="${pageContext.request.contextPath}/profile" class="dropdown-item">
                                     <i class="fas fa-user"></i> My Profile
                                 </a>
-                                <a href="${pageContext.request.contextPath}/orders" class="dropdown-item">
+                                <a href="${pageContext.request.contextPath}/myorders" class="dropdown-item">
                                     <i class="fas fa-shopping-bag"></i> My Orders
-                                </a>
-                                <a href="${pageContext.request.contextPath}/settings" class="dropdown-item">
-                                    <i class="fas fa-cog"></i> Settings
                                 </a>
                                 <div class="dropdown-divider"></div>
                                 <a href="${pageContext.request.contextPath}/logout" class="dropdown-item">
@@ -291,8 +288,8 @@
                         </div>
                     </c:when>
                     <c:otherwise>
-                        <a href="${pageContext.request.contextPath}/login" class="btn btn-outline">Login</a>
-                        <a href="${pageContext.request.contextPath}/register" class="btn btn-primary">Register</a>
+                        <a href="${pageContext.request.contextPath}/login" class="button button-outline">Login</a>
+                        <a href="${pageContext.request.contextPath}/register" class="button button-primary">Register</a>
                     </c:otherwise>
                 </c:choose>
             </div>

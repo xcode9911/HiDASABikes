@@ -27,14 +27,15 @@ import util.CookieUtil;
 /**
  * Authentication filter to protect secure resources
  */
-@WebFilter(urlPatterns = {"/home", "/user/*", "/profile", "/orders", "/settings"})
+@WebFilter(urlPatterns = {"/user/*", "/profile", "/myorders", "/settings"})
 public class AuthFilter implements Filter {
     private static final Logger logger = Logger.getLogger(AuthFilter.class.getName());
     private UserDAO userDAO;
     
     // Public resources that don't require authentication
     private static final Set<String> PUBLIC_PATHS = new HashSet<>(
-        Arrays.asList("/login", "/register", "/index.jsp", "/login.jsp", "/assets/", "/js/", "/css/", "/images/")
+        Arrays.asList("/login", "/register", "/index.jsp", "/login.jsp", "/assets/", "/js/", "/css/", "/images/", 
+                      "/home", "/bikes", "/about", "/contact", "/")
     );
     
     // File extensions that should be accessible without authentication
