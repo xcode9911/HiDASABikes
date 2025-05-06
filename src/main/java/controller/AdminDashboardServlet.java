@@ -51,7 +51,7 @@ public class AdminDashboardServlet extends HttpServlet {
         
         // Check if user is logged in and is an admin
         if (user == null || !"admin".equalsIgnoreCase(user.getRole())) {
-            response.sendRedirect("LoginServlet");
+            response.sendRedirect("AdminLoginServlet");
             return;
         }
         
@@ -107,7 +107,7 @@ public class AdminDashboardServlet extends HttpServlet {
         
         // Check if user is logged in and is an admin
         if (user == null || !"admin".equalsIgnoreCase(user.getRole())) {
-            response.sendRedirect("LoginServlet");
+            response.sendRedirect("AdminLoginServlet");
             return;
         }
         

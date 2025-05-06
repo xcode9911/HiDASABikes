@@ -66,6 +66,7 @@ public class BikeDAO {
     // Get bike by ID
     public Bike getBikeById(int bikeId) throws SQLException {
         String sql = "SELECT * FROM bike WHERE BikeID = ?";
+        System.out.println("Executing SQL query: " + sql + " with bikeId: " + bikeId);
         
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -73,20 +74,33 @@ public class BikeDAO {
         
         try {
             connection = DatabaseUtil.getConnection();
+            System.out.println("Database connection established");
+            
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, bikeId);
+            System.out.println("Prepared statement created with bikeId: " + bikeId);
             
             resultSet = preparedStatement.executeQuery();
+            System.out.println("Query executed");
             
             if (resultSet.next()) {
-                return extractBikeFromResultSet(resultSet);
+                System.out.println("Bike found in database");
+                Bike bike = extractBikeFromResultSet(resultSet);
+                System.out.println("Bike data extracted: " + bike.getBrandName() + " " + bike.getModelName());
+                return bike;
             } else {
+                System.out.println("No bike found with ID: " + bikeId);
                 return null;
             }
+        } catch (SQLException e) {
+            System.out.println("SQL Exception in getBikeById: " + e.getMessage());
+            e.printStackTrace();
+            throw e;
         } finally {
             if (resultSet != null) try { resultSet.close(); } catch (SQLException e) { }
             if (preparedStatement != null) try { preparedStatement.close(); } catch (SQLException e) { }
             if (connection != null) try { connection.close(); } catch (SQLException e) { }
+            System.out.println("Database resources closed");
         }
     }
     

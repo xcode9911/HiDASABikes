@@ -502,7 +502,7 @@
             <a href="../AdminDashboardServlet?action=viewBikes" class="menu-item">
                 <i class="fas fa-motorcycle"></i> Manage Bikes
             </a>
-            <a href="user/addBike.jsp" class="menu-item">
+            <a href="addBike.jsp" class="menu-item">
                 <i class="fas fa-plus-circle"></i> Add New Bike
             </a>
             <a href="#" class="menu-item">
