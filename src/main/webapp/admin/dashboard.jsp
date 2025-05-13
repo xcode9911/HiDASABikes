@@ -10,20 +10,7 @@
 <body>
     <div class="container">
         <!-- Sidebar -->
-        <div class="sidebar">
-            <div class="sidebar-header">
-                <img src="../assets/images/logo.png" alt="HiDASA Bikes Logo">
-            </div>
-            <ul class="sidebar-menu">
-                <li><a href="dashboard.jsp" class="active"><i class="fas fa-home"></i> Dashboard</a></li>
-                <li><a href="orders.jsp"><i class="fas fa-shopping-cart"></i> Orders</a></li>
-                <li><a href="sales.jsp"><i class="fas fa-chart-line"></i> Sales History</a></li>
-                <li><a href="add-bike.jsp"><i class="fas fa-plus-circle"></i> Add New Bike</a></li>
-                <li><a href="manage-bikes.jsp"><i class="fas fa-bicycle"></i> Manage Bikes</a></li>
-                <li><a href="inventory.jsp"><i class="fas fa-box"></i> Inventory</a></li>
-                <li><a href="messages.jsp"><i class="fas fa-envelope"></i> Messages</a></li>
-            </ul>
-        </div>
+        <jsp:include page="adminsidebar.jsp" />
 
         <!-- Main Content -->
         <div class="main-content">

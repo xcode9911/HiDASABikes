@@ -2,6 +2,7 @@ package controller;
 
 import java.io.IOException;
 
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -35,7 +36,7 @@ public class AdminLoginServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// Redirect to admin login page
-		response.sendRedirect("user/adminLogin.jsp");
+		response.sendRedirect("admin/adminLogin.jsp");
 	}
 
 	/**

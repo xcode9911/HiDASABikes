@@ -120,6 +120,33 @@ public class FeedbackDAO {
         }
     }
     
+    // Get feedback by ID
+    public Feedback getFeedbackById(int feedbackId) throws SQLException {
+        String sql = "SELECT * FROM feedback WHERE FeedbackID = ?";
+        
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        
+        try {
+            connection = DatabaseUtil.getConnection();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, feedbackId);
+            
+            resultSet = preparedStatement.executeQuery();
+            
+            if (resultSet.next()) {
+                return extractFeedbackFromResultSet(resultSet);
+            }
+            
+            return null;
+        } finally {
+            if (resultSet != null) try { resultSet.close(); } catch (SQLException e) { }
+            if (preparedStatement != null) try { preparedStatement.close(); } catch (SQLException e) { }
+            if (connection != null) try { connection.close(); } catch (SQLException e) { }
+        }
+    }
+    
     // Helper method to extract feedback from result set
     private Feedback extractFeedbackFromResultSet(ResultSet resultSet) throws SQLException {
         Feedback feedback = new Feedback();

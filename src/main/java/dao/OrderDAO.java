@@ -210,6 +210,7 @@ public class OrderDAO {
     // Update order status
     public boolean updateOrderStatus(int orderId, String status) throws SQLException {
         String sql = "UPDATE `order` SET Status = ? WHERE OrderID = ?";
+        System.out.println("Executing SQL: " + sql + " with orderId=" + orderId + ", status=" + status);
         
         try (Connection conn = DatabaseUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -218,7 +219,11 @@ public class OrderDAO {
             stmt.setInt(2, orderId);
             
             int affectedRows = stmt.executeUpdate();
+            System.out.println("Affected rows: " + affectedRows);
             return affectedRows > 0;
+        } catch (SQLException e) {
+            System.out.println("SQL Exception in updateOrderStatus: " + e.getMessage());
+            throw e;
         }
     }
     
@@ -292,5 +297,25 @@ public class OrderDAO {
         order.setOrderDate(rs.getDate("Order_Date"));
         order.setStatus(rs.getString("Status"));
         return order;
+    }
+    
+    // Get all orders
+    public List<Order> getAllOrders() throws SQLException {
+        List<Order> orders = new ArrayList<>();
+        String sql = "SELECT * FROM `order` ORDER BY Order_Date DESC";
+        
+        try (Connection conn = DatabaseUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            
+            while (rs.next()) {
+                Order order = extractOrderFromResultSet(rs);
+                // Get order details for this order
+                order.setOrderDetails(getOrderDetailsByOrderId(order.getOrderId()));
+                orders.add(order);
+            }
+        }
+        
+        return orders;
     }
 } 

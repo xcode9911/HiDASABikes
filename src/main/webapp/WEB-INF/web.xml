@@ -27,4 +27,14 @@
         <session-timeout>30</session-timeout>
     </session-config>
     
+    <!-- JSTL Configuration -->
+    <jsp-config>
+        <taglib>
+            <taglib-uri>jakarta.tags.core</taglib-uri>
+            <taglib-location>/WEB-INF/tld/c.tld</taglib-location>
+        </taglib>
+    </jsp-config>
+    
+   
+    
 </web-app> 

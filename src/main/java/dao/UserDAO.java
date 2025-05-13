@@ -296,6 +296,62 @@ public class UserDAO {
         }
     }
     
+    // Get user by order ID
+    public User getUserByOrderId(int orderId) throws SQLException {
+        String sql = "SELECT u.* FROM user u " +
+                    "JOIN user_order uo ON u.UserID = uo.UserID " +
+                    "WHERE uo.OrderID = ?";
+        
+        try (Connection conn = DatabaseUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setInt(1, orderId);
+            
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    User user = new User();
+                    user.setUserId(rs.getInt("UserID"));
+                    user.setName(rs.getString("Name"));
+                    user.setEmail(rs.getString("Email"));
+                    user.setPhone(rs.getString("Phone"));
+                    user.setRole(rs.getString("Role"));
+                    return user;
+                }
+            }
+        }
+        
+        return null;
+    }
+    
+    public List<User> getUsersByFeedbackId(int feedbackId) throws SQLException {
+        String sql = "SELECT u.* FROM user u " +
+                    "JOIN user_feedback uf ON u.UserID = uf.UserID " +
+                    "WHERE uf.FeedbackID = ?";
+        
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        
+        try {
+            connection = DatabaseUtil.getConnection();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, feedbackId);
+            
+            resultSet = preparedStatement.executeQuery();
+            
+            List<User> users = new ArrayList<>();
+            while (resultSet.next()) {
+                users.add(extractUserFromResultSet(resultSet));
+            }
+            
+            return users;
+        } finally {
+            if (resultSet != null) try { resultSet.close(); } catch (SQLException e) { }
+            if (preparedStatement != null) try { preparedStatement.close(); } catch (SQLException e) { }
+            if (connection != null) try { connection.close(); } catch (SQLException e) { }
+        }
+    }
+    
     private User extractUserFromResultSet(ResultSet rs) throws SQLException {
         User user = new User();
         user.setUserId(rs.getInt("UserID"));

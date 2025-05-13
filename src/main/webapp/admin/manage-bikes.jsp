@@ -11,23 +11,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <div class="container">
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <div class="sidebar-header">
-                <img src="../assets/images/logo.png" alt="HiDASA Bikes Logo">
-            </div>
-            <ul class="sidebar-menu">
-                <li><a href="dashboard.jsp"><i class="fas fa-home"></i> Dashboard</a></li>
-                <li><a href="orders.jsp"><i class="fas fa-shopping-cart"></i> Orders</a></li>
-                <li><a href="sales.jsp"><i class="fas fa-chart-line"></i> Sales History</a></li>
-                <li><a href="add-bike.jsp"><i class="fas fa-plus-circle"></i> Add New Bike</a></li>
-                <li><a href="manage-bikes.jsp" class="active"><i class="fas fa-bicycle"></i> Manage Bikes</a></li>
-                <li><a href="inventory.jsp"><i class="fas fa-box"></i> Inventory</a></li>
-                <li><a href="messages.jsp"><i class="fas fa-envelope"></i> Messages</a></li>
-            </ul>
-        </div>
+    <jsp:include page="adminsidebar.jsp" />
 
+    <div class="container">
         <!-- Main Content -->
         <div class="main-content">
             <h1>Manage Bikes</h1>
@@ -178,7 +164,6 @@
                             <option value="Road">Road Bike</option>
                             <option value="Hybrid">Hybrid Bike</option>
                             <option value="Electric">Electric Bike</option>
-                            <option value="Adventure">Adventure Bike</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -420,6 +405,7 @@
         color: #666;
         margin-bottom: 20px;
     }
+    
 
     @media (min-width: 768px) {
         .modal .form-section {
@@ -435,32 +421,39 @@
     </style>
 
     <script>
+    // Global variable to store the current bike ID
+    let currentBikeId = null;
+
     function openEditModal(bikeId) {
         console.log("Opening modal for bike ID:", bikeId);
+        
+        // Validate bikeId
+        if (!bikeId || isNaN(bikeId)) {
+            console.error("Invalid bike ID:", bikeId);
+            showErrorInModal("Invalid bike ID");
+            return;
+        }
+        
+        currentBikeId = bikeId;
         
         // Show loading state
         const modal = document.getElementById("editBikeModal");
         modal.style.display = "block";
         
-        // Ensure bikeId is a valid number
-        if (!bikeId || isNaN(bikeId)) {
-            console.error("Invalid bike ID:", bikeId);
+        // Show loading message
             modal.querySelector('.modal-content').innerHTML = `
                 <span class="close">&times;</span>
-                <div class="error-message">
-                    <h3>Error Loading Bike Data</h3>
-                    <p>Invalid bike ID</p>
-                    <button onclick="closeEditModal()" class="btn-cancel">Close</button>
+            <div class="loading">
+                <h3>Loading Bike Data...</h3>
+                <p>Please wait while we fetch the bike details.</p>
                 </div>
             `;
             attachModalEventListeners();
-            return;
-        }
         
         // Fetch bike data with proper URL encoding
         const url = new URL('../ManageBikesServlet', window.location.href);
         url.searchParams.append('action', 'getBike');
-        url.searchParams.append('bikeId', bikeId);
+        url.searchParams.append('bikeId', bikeId.toString());
         
         console.log("Fetching bike data from:", url.toString());
         
@@ -474,13 +467,161 @@
             })
             .then(bike => {
                 console.log("Received bike data:", bike);
-                
-                // Set the bike ID (readonly)
-                const bikeIdInput = document.getElementById("editBikeId");
-                if (bikeIdInput) {
-                    bikeIdInput.value = bike.bikeId;
-                    bikeIdInput.setAttribute('readonly', true);
+                if (!bike || !bike.bikeId) {
+                    throw new Error("Invalid bike data received");
                 }
+                populateModalForm(bike);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showErrorInModal(error.message);
+            });
+    }
+
+    function showErrorInModal(message) {
+        const modal = document.getElementById("editBikeModal");
+        modal.querySelector('.modal-content').innerHTML = `
+            <span class="close">&times;</span>
+            <div class="error-message">
+                <h3>Error Loading Bike Data</h3>
+                <p>${message}</p>
+                <button onclick="closeEditModal()" class="btn-cancel">Close</button>
+            </div>
+        `;
+        attachModalEventListeners();
+    }
+
+    function populateModalForm(bike) {
+        const modal = document.getElementById("editBikeModal");
+        
+        // Restore the original form content
+        modal.querySelector('.modal-content').innerHTML = `
+            <span class="close">&times;</span>
+            <h2>Edit Bike</h2>
+            <form id="editBikeForm">
+                <input type="hidden" name="action" value="updateBike">
+                <input type="hidden" name="bikeId" id="editBikeId" readonly>
+                
+                <!-- Basic Information -->
+                <div class="form-section">
+                    <h3>Basic Information</h3>
+                    <div class="form-group">
+                        <label for="editBrandName">Brand Name:</label>
+                        <input type="text" id="editBrandName" name="brandName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editModelName">Model Name:</label>
+                        <input type="text" id="editModelName" name="modelName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editType">Type:</label>
+                        <select id="editType" name="type" required>
+                            <option value="Mountain">Mountain Bike</option>
+                            <option value="Road">Road Bike</option>
+                            <option value="Hybrid">Hybrid Bike</option>
+                            <option value="Electric">Electric Bike</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="editPrice">Price (₹):</label>
+                        <input type="number" id="editPrice" name="price" step="0.01" required>
+                    </div>
+                </div>
+
+                <!-- Engine Specifications -->
+                <div class="form-section">
+                    <h3>Engine Specifications</h3>
+                    <div class="form-group">
+                        <label for="editEngineCapacity">Engine Capacity:</label>
+                        <input type="text" id="editEngineCapacity" name="engineCapacity" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editFuelType">Fuel Type:</label>
+                        <input type="text" id="editFuelType" name="fuelType" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editTransmission">Transmission:</label>
+                        <input type="text" id="editTransmission" name="transmission" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editMileage">Mileage:</label>
+                        <input type="text" id="editMileage" name="mileage" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editPower">Power:</label>
+                        <input type="text" id="editPower" name="power" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editTorque">Torque:</label>
+                        <input type="text" id="editTorque" name="torque" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editCoolingSystem">Cooling System:</label>
+                        <input type="text" id="editCoolingSystem" name="coolingSystem" required>
+                    </div>
+                </div>
+
+                <!-- Hardware & Dimensions -->
+                <div class="form-section">
+                    <h3>Hardware & Dimensions</h3>
+                    <div class="form-group">
+                        <label for="editBrakeType">Brake Type:</label>
+                        <input type="text" id="editBrakeType" name="brakeType" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editSuspensionType">Suspension Type:</label>
+                        <input type="text" id="editSuspensionType" name="suspensionType" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editKerbWeight">Kerb Weight:</label>
+                        <input type="text" id="editKerbWeight" name="kerbWeight" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editSeatHeight">Seat Height:</label>
+                        <input type="text" id="editSeatHeight" name="seatHeight" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editFuelTankCapacity">Fuel Tank Capacity:</label>
+                        <input type="text" id="editFuelTankCapacity" name="fuelTankCapacity" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editTopSpeed">Top Speed:</label>
+                        <input type="text" id="editTopSpeed" name="topSpeed" required>
+                    </div>
+                </div>
+
+                <!-- Additional Information -->
+                <div class="form-section">
+                    <h3>Additional Information</h3>
+                    <div class="form-group">
+                        <label for="editWarrantyInfo">Warranty Info:</label>
+                        <textarea id="editWarrantyInfo" name="warrantyInfo" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="editStockQuantity">Stock Quantity:</label>
+                        <input type="number" id="editStockQuantity" name="stockQuantity" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editColor">Color:</label>
+                        <input type="text" id="editColor" name="color" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editDescription">Description:</label>
+                        <textarea id="editDescription" name="description" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="editBikeImage">Bike Image:</label>
+                        <input type="file" id="editBikeImage" name="bikeImage" accept="image/*">
+                        <small>Leave empty to keep current image</small>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-save">Save Changes</button>
+                    <button type="button" class="btn-cancel" onclick="closeEditModal()">Cancel</button>
+                </div>
+            </form>
+        `;
                 
                 // Helper function to safely set form field values
                 const setFieldValue = (fieldId, value) => {
@@ -492,6 +633,9 @@
                         console.warn(`Field not found: ${fieldId}`);
                     }
                 };
+        
+        // Set the bike ID (readonly)
+        setFieldValue("editBikeId", bike.bikeId);
                 
                 // Populate form fields
                 setFieldValue("editBrandName", bike.brandName);
@@ -518,19 +662,6 @@
 
                 // Reattach event listeners
                 attachModalEventListeners();
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                modal.querySelector('.modal-content').innerHTML = `
-                    <span class="close">&times;</span>
-                    <div class="error-message">
-                        <h3>Error Loading Bike Data</h3>
-                        <p>${error.message}</p>
-                        <button onclick="closeEditModal()" class="btn-cancel">Close</button>
-                    </div>
-                `;
-                attachModalEventListeners();
-            });
     }
 
     function attachModalEventListeners() {
@@ -538,8 +669,10 @@
         const span = document.getElementsByClassName("close")[0];
         
         // Close modal when clicking (x)
+        if (span) {
         span.onclick = function() {
             closeEditModal();
+            }
         }
 
         // Handle form submission
@@ -549,10 +682,7 @@
                 e.preventDefault();
                 
                 const formData = new FormData(this);
-                const bikeId = document.getElementById("editBikeId").value;
-                
-                // Ensure bikeId is included in the form data
-                formData.append("bikeId", bikeId);
+                formData.append("bikeId", currentBikeId);
                 
                 fetch('../ManageBikesServlet', {
                     method: 'POST',
@@ -580,6 +710,7 @@
     function closeEditModal() {
         const modal = document.getElementById("editBikeModal");
         modal.style.display = "none";
+        currentBikeId = null;
     }
 
     // Close modal when clicking outside
@@ -595,6 +726,11 @@
             window.location.href = '../ManageBikesServlet?action=deleteBike&bikeId=' + bikeId;
         }
     }
+
+    // Initialize modal event listeners when the page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        attachModalEventListeners();
+    });
     </script>
 </body>
 </html> 

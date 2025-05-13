@@ -547,42 +547,7 @@
     </style>
 </head>
 <body>
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <div class="sidebar-header">
-            <img src="../images/hidasalogo.png" alt="HIDASA Bikes Logo">
-            <h3>Admin Panel</h3>
-        </div>
-        <div class="sidebar-menu">
-            <a href="../AdminDashboardServlet" class="menu-item">
-                <i class="fas fa-home"></i> Dashboard Home
-            </a>
-            <a href="../AdminDashboardServlet?action=viewBikes" class="menu-item">
-                <i class="fas fa-motorcycle"></i> Manage Bikes
-            </a>
-            <a href="../user/addBike.jsp" class="menu-item active">
-                <i class="fas fa-plus-circle"></i> Add New Bike
-            </a>
-            <a href="#" class="menu-item">
-                <i class="fas fa-box"></i> Inventory Overview
-            </a>
-            <a href="#" class="menu-item">
-                <i class="fas fa-chart-bar"></i> Reports & Analytics
-            </a>
-            <a href="#" class="menu-item">
-                <i class="fas fa-envelope"></i> Inquiries & Feedback
-            </a>
-            <a href="#" class="menu-item">
-                <i class="fas fa-users"></i> Manage Users
-            </a>
-            <a href="#" class="menu-item">
-                <i class="fas fa-cog"></i> Settings
-            </a>
-            <a href="../LogoutServlet" class="menu-item">
-                <i class="fas fa-sign-out-alt"></i> Logout
-            </a>
-        </div>
-    </div>
+    <jsp:include page="adminsidebar.jsp" />
 
     <!-- Main Content -->
     <div class="main-content">

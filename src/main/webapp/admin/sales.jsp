@@ -1,4 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,25 +9,55 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .action-btn {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            background: #f0f0f0;
+            transition: all 0.3s ease;
+        }
+        
+        .action-btn:hover {
+            background: #e0e0e0;
+        }
+        
+        .action-btn.delete {
+            color: #dc3545;
+        }
+        
+        .action-btn.delete:hover {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .status-badge {
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.9em;
+        }
+        
+        .status-completed {
+            background: #28a745;
+            color: white;
+        }
+        
+        .status-pending {
+            background: #ffc107;
+            color: black;
+        }
+        
+        .status-failed {
+            background: #dc3545;
+            color: white;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <div class="sidebar-header">
-                <img src="../assets/images/logo.png" alt="HiDASA Bikes Logo">
-            </div>
-            <ul class="sidebar-menu">
-                <li><a href="dashboard.jsp"><i class="fas fa-home"></i> Dashboard</a></li>
-                <li><a href="orders.jsp"><i class="fas fa-shopping-cart"></i> Orders</a></li>
-                <li><a href="sales.jsp" class="active"><i class="fas fa-chart-line"></i> Sales History</a></li>
-                <li><a href="add-bike.jsp"><i class="fas fa-plus-circle"></i> Add New Bike</a></li>
-                <li><a href="manage-bikes.jsp"><i class="fas fa-bicycle"></i> Manage Bikes</a></li>
-                <li><a href="inventory.jsp"><i class="fas fa-box"></i> Inventory</a></li>
-                <li><a href="messages.jsp"><i class="fas fa-envelope"></i> Messages</a></li>
-            </ul>
-        </div>
+    <jsp:include page="adminsidebar.jsp" />
 
+    <div class="container">
         <!-- Main Content -->
         <div class="main-content">
             <div class="welcome-header">
@@ -33,23 +65,30 @@
                 <p>Track your business performance and sales analytics</p>
             </div>
             
+            <!-- Debug Information -->
+            <c:if test="${empty totalSales || totalSales == 0}">
+                <div style="color: red; padding: 10px; margin: 10px 0; background: #ffeeee;">
+                    Warning: No sales data available. Please check database connection.
+                </div>
+            </c:if>
+            
             <!-- Sales Summary Cards -->
             <div class="dashboard-cards">
                 <div class="card">
                     <h3>Total Sales</h3>
-                    <div class="value">₹8,50,000</div>
+                    <div class="value">₹<fmt:formatNumber value="${totalSales}" pattern="#,##0.00"/></div>
                 </div>
                 <div class="card">
                     <h3>Monthly Sales</h3>
-                    <div class="value">₹2,25,000</div>
+                    <div class="value">₹<fmt:formatNumber value="${monthlySales}" pattern="#,##0.00"/></div>
                 </div>
                 <div class="card">
                     <h3>Total Orders</h3>
-                    <div class="value">45</div>
+                    <div class="value">${totalOrders}</div>
                 </div>
                 <div class="card">
                     <h3>Average Order Value</h3>
-                    <div class="value">₹18,889</div>
+                    <div class="value">₹<fmt:formatNumber value="${avgOrderValue}" pattern="#,##0.00"/></div>
                 </div>
             </div>
 
@@ -57,9 +96,12 @@
             <div class="table-container">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                     <h2>Sales Records</h2>
-                    <div>
-                        <input type="date" style="padding: 8px; margin-right: 10px; border: 1px solid var(--border-color); border-radius: 5px;">
-                        <button>Filter</button>
+                    <div style="display: flex; gap: 10px;">
+                        <button onclick="printAllSales()" class="action-btn" style="background: #28a745; color: white;">
+                            <i class="fas fa-print"></i> Print All Sales
+                        </button>
+                        <input type="date" id="filterDate" style="padding: 8px; margin-right: 10px; border: 1px solid var(--border-color); border-radius: 5px;">
+                        <button onclick="filterSales()">Filter</button>
                     </div>
                 </div>
 
@@ -67,7 +109,7 @@
                     <thead>
                         <tr>
                             <th>Order ID</th>
-                            <th>Date</th>
+                            <th>Delivery Date</th>
                             <th>Customer Name</th>
                             <th>Bike Model</th>
                             <th>Amount</th>
@@ -76,39 +118,41 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>#ORD-001</td>
-                            <td>2024-03-15</td>
-                            <td>John Doe</td>
-                            <td>Mountain Pro X1</td>
-                            <td>₹25,000</td>
-                            <td><span class="status-badge status-completed">Paid</span></td>
-                            <td>
-                                <button style="padding: 5px 10px;"><i class="fas fa-eye"></i> View</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#ORD-002</td>
-                            <td>2024-03-14</td>
-                            <td>Jane Smith</td>
-                            <td>Road Master R2</td>
-                            <td>₹35,000</td>
-                            <td><span class="status-badge status-pending">Pending</span></td>
-                            <td>
-                                <button style="padding: 5px 10px;"><i class="fas fa-eye"></i> View</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#ORD-003</td>
-                            <td>2024-03-13</td>
-                            <td>Mike Johnson</td>
-                            <td>Hybrid Explorer</td>
-                            <td>₹30,000</td>
-                            <td><span class="status-badge status-completed">Paid</span></td>
-                            <td>
-                                <button style="padding: 5px 10px;"><i class="fas fa-eye"></i> View</button>
-                            </td>
-                        </tr>
+                        <c:choose>
+                            <c:when test="${empty salesList}">
+                                <tr>
+                                    <td colspan="7" style="text-align: center; padding: 20px;">
+                                        No sales records found
+                                    </td>
+                                </tr>
+                            </c:when>
+                            <c:otherwise>
+                                <c:forEach items="${salesList}" var="sale">
+                                    <tr>
+                                        <td>#${sale.orderId}</td>
+                                        <td><fmt:formatDate value="${sale.deliveryDate}" pattern="yyyy-MM-dd"/></td>
+                                        <td>${sale.customerName}</td>
+                                        <td>${sale.bikeModel}</td>
+                                        <td>₹<fmt:formatNumber value="${sale.totalAmount}" pattern="#,##0.00"/></td>
+                                        <td>
+                                            <span class="status-badge status-${sale.paymentStatus.toLowerCase()}">
+                                                ${sale.paymentStatus}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <div style="display: flex; gap: 10px;">
+                                                <button onclick="printOrder(${sale.orderId})" class="action-btn" title="Print Order">
+                                                    <i class="fas fa-print"></i>
+                                                </button>
+                                                <button onclick="deleteOrder(${sale.orderId})" class="action-btn delete" title="Delete Order">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                            </c:otherwise>
+                        </c:choose>
                     </tbody>
                 </table>
             </div>
@@ -126,13 +170,22 @@
     <!-- Chart.js Script -->
     <script>
         const ctx = document.getElementById('salesChart').getContext('2d');
+        const monthlyData = [
+            <c:forEach items="${monthlySalesData}" var="sales" varStatus="status">
+                ${sales.total}${!status.last ? ',' : ''}
+            </c:forEach>
+        ];
+        
+        // Initialize chart with empty data if no data available
+        const chartData = monthlyData.length > 0 ? monthlyData : Array(12).fill(0);
+        
         new Chart(ctx, {
             type: 'line',
             data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
                 datasets: [{
                     label: 'Sales Revenue',
-                    data: [350000, 450000, 520000, 480000, 600000, 580000],
+                    data: chartData,
                     borderColor: '#ff0066',
                     backgroundColor: 'rgba(255, 0, 102, 0.1)',
                     fill: true,
@@ -157,6 +210,42 @@
                 }
             }
         });
+
+        function printOrder(orderId) {
+            window.open('${pageContext.request.contextPath}/admin/print/order/' + orderId, '_blank', 'width=800,height=600');
+        }
+
+        function printAllSales() {
+            window.open('${pageContext.request.contextPath}/admin/print/all', '_blank', 'width=800,height=600');
+        }
+
+        function deleteOrder(orderId) {
+            if (confirm('Are you sure you want to delete this order?')) {
+                fetch('${pageContext.request.contextPath}/admin/orders/delete?id=' + orderId, {
+                    method: 'POST'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Order deleted successfully');
+                        location.reload();
+                    } else {
+                        alert('Error deleting order: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error deleting order');
+                });
+            }
+        }
+
+        function filterSales() {
+            const date = document.getElementById('filterDate').value;
+            if (date) {
+                window.location.href = '${pageContext.request.contextPath}/admin/sales?action=list&date=' + date;
+            }
+        }
     </script>
 </body>
 </html>
