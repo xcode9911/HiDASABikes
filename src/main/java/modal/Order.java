@@ -1,7 +1,7 @@
 package modal;
 
-import java.util.ArrayList;
 import java.util.Date;
+
 import java.util.List;
 
 public class Order {
@@ -9,21 +9,16 @@ public class Order {
     private Date orderDate;
     private String status;
     private List<OrderDetail> orderDetails;
-    private List<Payment> payments;
 
     // Default constructor
     public Order() {
-        this.orderDetails = new ArrayList<>();
-        this.payments = new ArrayList<>();
     }
 
-    // Constructor with all fields
+    // Constructor with fields
     public Order(int orderId, Date orderDate, String status) {
         this.orderId = orderId;
         this.orderDate = orderDate;
         this.status = status;
-        this.orderDetails = new ArrayList<>();
-        this.payments = new ArrayList<>();
     }
 
     // Getters and Setters
@@ -59,37 +54,41 @@ public class Order {
         this.orderDetails = orderDetails;
     }
 
-    public List<Payment> getPayments() {
-        return payments;
+    // Calculate total amount of the order
+    public double calculateTotal() {
+        if (orderDetails == null || orderDetails.isEmpty()) {
+            return 0.0;
     }
 
-    public void setPayments(List<Payment> payments) {
-        this.payments = payments;
+        double total = 0.0;
+        for (OrderDetail detail : orderDetails) {
+            if (detail.getBike() != null) {
+                total += detail.getBike().getPrice() * detail.getQuantity();
     }
-
-    // Helper methods to add order details and payments
-    public void addOrderDetail(OrderDetail orderDetail) {
-        if (this.orderDetails == null) {
-            this.orderDetails = new ArrayList<>();
         }
-        this.orderDetails.add(orderDetail);
+        
+        return total;
+    }
+    
+    // Format total as string with commas
+    public String getFormattedTotal() {
+        java.text.NumberFormat formatter = java.text.NumberFormat.getNumberInstance(new java.util.Locale("en", "IN"));
+        formatter.setMinimumFractionDigits(2);
+        formatter.setMaximumFractionDigits(2);
+        return formatter.format(calculateTotal());
     }
 
-    public void addPayment(Payment payment) {
-        if (this.payments == null) {
-            this.payments = new ArrayList<>();
+    // Format order date as string
+    public String getFormattedDate() {
+        if (orderDate == null) {
+            return "";
         }
-        this.payments.add(payment);
+        java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("MMM dd, yyyy");
+        return formatter.format(orderDate);
     }
 
     @Override
     public String toString() {
-        return "Order{" +
-                "orderId=" + orderId +
-                ", orderDate=" + orderDate +
-                ", status='" + status + '\'' +
-                ", orderDetails=" + orderDetails +
-                ", payments=" + payments +
-                '}';
+        return "Order [orderId=" + orderId + ", orderDate=" + orderDate + ", status=" + status + "]";
     }
 } 

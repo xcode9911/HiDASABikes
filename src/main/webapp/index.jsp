@@ -20,10 +20,12 @@
         <div class="left-side">
             <!-- Register Welcome Content -->
             <div class="welcome-content">
-                <img src="${pageContext.request.contextPath}/assets/images/hidasalogo.png" alt="HIDASA Logo" style="max-width: 80%; margin-top: -200px;">
+                <a href="${pageContext.request.contextPath}/home">
+                    <img src="${pageContext.request.contextPath}/assets/images/hidasalogo.png" alt="HIDASA Logo" style="max-width: 80%; margin-top: -200px;">
+                </a>
                 <div class="welcome-text">
                     <h1>New Here?<span>Join the Journey!</span></h1>
-                    <a class="welcome-link" href="${pageContext.request.contextPath}/login.jsp">Back to Login</a>
+                    <a class="welcome-link" href="${pageContext.request.contextPath}/login">Back to Login</a>
                 </div>
             </div>
         </div>
@@ -155,7 +157,7 @@
                     </form>
                     
                     <div class="toggle-form">
-                        <p>Already have an account? <a href="${pageContext.request.contextPath}/login.jsp">Login</a></p>
+                        <p>Already have an account? <a href="${pageContext.request.contextPath}/login">Login</a></p>
                     </div>
                 </div>
             </div>

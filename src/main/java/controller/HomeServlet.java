@@ -10,10 +10,15 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 import dao.UserDAO;
 import modal.User;
 import util.CookieUtil;
+import dao.BikeDAO;
+import modal.Bike;
 
 /**
  * Servlet implementation class HomeServlet
@@ -28,7 +33,6 @@ public class HomeServlet extends HttpServlet {
      */
     public HomeServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -69,17 +73,48 @@ public class HomeServlet extends HttpServlet {
 	                }
 	            } catch (SQLException e) {
 	                e.printStackTrace();
-	                // If error occurs during session restoration, redirect to login
-	                response.sendRedirect(request.getContextPath() + "/login?error=session_restore");
-	                return;
+	                // Continue to homepage even if session restoration fails
 	            }
 	        }
 	        
-	        // If still no session after cookie check, redirect to login
-	        if (session == null || session.getAttribute("userId") == null) {
-	            response.sendRedirect(request.getContextPath() + "/login");
-	            return;
+	        // No redirection to login page - allow access to homepage for everyone
+	    }
+	    
+	    // Initialize BikeDAO
+	    BikeDAO bikeDAO = null;
+	    try {
+	        bikeDAO = new BikeDAO();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        request.setAttribute("error", "Failed to connect to database: " + e.getMessage());
+	        request.getRequestDispatcher("/user/home.jsp").forward(request, response);
+	        return;
+	    }
+	    
+	    try {
+	        // Get featured bikes (latest 3)
+	        List<Bike> featuredBikes = bikeDAO.getFeaturedBikes(3);
+	        request.setAttribute("featuredBikes", featuredBikes);
+	        
+	        // Get all distinct bike types for categories
+	        List<String> bikeTypes = bikeDAO.getDistinctBikeTypes();
+	        request.setAttribute("bikeTypes", bikeTypes);
+	        
+	        // Create a map of bike counts by type
+	        Map<String, Integer> bikeTypeCounts = new HashMap<>();
+	        for (String type : bikeTypes) {
+	            List<Bike> typeSpecificBikes = bikeDAO.getBikesByType(type);
+	            bikeTypeCounts.put(type, typeSpecificBikes.size());
 	        }
+	        request.setAttribute("bikeTypeCounts", bikeTypeCounts);
+	        
+	        // Get total bike count
+	        List<Bike> allBikes = bikeDAO.getAllBikes();
+	        request.setAttribute("totalBikeCount", allBikes.size());
+	        
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        request.setAttribute("error", "Failed to retrieve bike data: " + e.getMessage());
 	    }
 	    
 		// Forward to home page
@@ -90,8 +125,6 @@ public class HomeServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
-
 }

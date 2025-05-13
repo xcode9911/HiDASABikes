@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 21, 2025 at 05:15 PM
+-- Generation Time: May 12, 2025 at 04:06 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -36,6 +36,17 @@ CREATE TABLE `address` (
   `Country` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `address`
+--
+
+INSERT INTO `address` (`AddressID`, `Street`, `City`, `State`, `ZipCode`, `Country`) VALUES
+(1, 'Hahahha', 'Kathmadu', '1', '56600', 'Nepal'),
+(2, 'SundarHaraicha-9, Morang', 'Biratchowk', 'Koshi', '56600', 'Nepal'),
+(3, 'SundarHaraicha-9, Morang', 'Biratchowk', '1', '56600', 'Nepal'),
+(4, 'SundarHaraicha-9, Morang', 'Biratchowk', '', '56600', 'Nepal'),
+(5, 'SundarHaraicha-9, Morang', 'Biratchowk', '1', '56600', 'Nepal');
+
 -- --------------------------------------------------------
 
 --
@@ -65,109 +76,19 @@ CREATE TABLE `bike` (
   `Stock_Quantity` int(11) DEFAULT NULL,
   `Description` text DEFAULT NULL,
   `Color` varchar(50) DEFAULT NULL,
-  `Bike_Image` blob DEFAULT NULL
+  `Bike_Image` longblob DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- --------------------------------------------------------
-
 --
--- Table structure for table `feedback`
+-- Dumping data for table `bike`
 --
 
-CREATE TABLE `feedback` (
-  `FeedbackID` int(11) NOT NULL,
-  `Subject` varchar(255) DEFAULT NULL,
-  `Message` text DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `order`
---
-
-CREATE TABLE `order` (
-  `OrderID` int(11) NOT NULL,
-  `Order_Date` date DEFAULT NULL,
-  `Status` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `orderdetail`
---
-
-CREATE TABLE `orderdetail` (
-  `OrderDetailID` int(11) NOT NULL,
-  `OrderID` int(11) DEFAULT NULL,
-  `BikeID` int(11) DEFAULT NULL,
-  `Quantity` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `order_payment`
---
-
-CREATE TABLE `order_payment` (
-  `OrderID` int(11) NOT NULL,
-  `PaymentID` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `order_sale`
---
-
-CREATE TABLE `order_sale` (
-  `OrderID` int(11) NOT NULL,
-  `SaleID` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `payment`
---
-
-CREATE TABLE `payment` (
-  `PaymentID` int(11) NOT NULL,
-  `Amount` decimal(10,2) DEFAULT NULL,
-  `Payment_Method` varchar(50) DEFAULT NULL,
-  `Payment_Status` varchar(50) DEFAULT NULL,
-  `Payment_Date` date DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `sale`
---
-
-CREATE TABLE `sale` (
-  `SaleID` int(11) NOT NULL,
-  `Sale_Date` date DEFAULT NULL,
-  `Total_Sale_Amount` decimal(10,2) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `user`
---
-
-CREATE TABLE `user` (
-  `UserID` int(11) NOT NULL,
-  `Name` varchar(100) DEFAULT NULL,
-  `Email` varchar(100) DEFAULT NULL,
-  `Phone` varchar(20) DEFAULT NULL,
-  `Password` varchar(255) DEFAULT NULL,
-  `Profile_Image` LONGBLOB DEFAULT NULL,
-  `Role` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+INSERT INTO `bike` (`BikeID`, `Brand_Name`, `Model_Name`, `Type`, `Price`, `Engine_Capacity`, `Fuel_Type`, `Transmission`, `Mileage`, `Power`, `Torque`, `Cooling_System`, `Brake_Type`, `Suspension_Type`, `Kerb_Weight`, `Seat_Height`, `Fuel_Tank_Capacity`, `Top_Speed`, `Warranty_Info`, `Stock_Quantity`, `Description`, `Color`, `Bike_Image`) VALUES
+(8, 'Royal Enfieldss', 'Haina ', 'Hybrid', 259000.00, '411', 'Petrol', 'Manual', '30', '24.3', '32Nm', 'Air', 'Disc', 'Monoshock', '199kg', '800', '15', '13', '3 Years', 10, 'Purposeful adventure tourer built for the Himalayas', 'Granite Black',NULL);
+INSERT INTO `bike` (`BikeID`, `Brand_Name`, `Model_Name`, `Type`, `Price`, `Engine_Capacity`, `Fuel_Type`, `Transmission`, `Mileage`, `Power`, `Torque`, `Cooling_System`, `Brake_Type`, `Suspension_Type`, `Kerb_Weight`, `Seat_Height`, `Fuel_Tank_Capacity`, `Top_Speed`, `Warranty_Info`, `Stock_Quantity`, `Description`, `Color`, `Bike_Image`) VALUES
+(9, 'Royal Enfield', 'Classic 350', 'Cruiser', 239000.00, '349cc', 'Petrol', 'Manual', '35km/l', '20.2bhp', '27Nm', 'Air', 'Disc', 'Dual Shock', '195kg', '790mm', '13L', '120km/h', '3 Years', 50, 'Iconic retro design with modern reliability', 'Gunmetal Grey',NULL);
+INSERT INTO `bike` (`BikeID`, `Brand_Name`, `Model_Name`, `Type`, `Price`, `Engine_Capacity`, `Fuel_Type`, `Transmission`, `Mileage`, `Power`, `Torque`, `Cooling_System`, `Brake_Type`, `Suspension_Type`, `Kerb_Weight`, `Seat_Height`, `Fuel_Tank_Capacity`, `Top_Speed`, `Warranty_Info`, `Stock_Quantity`, `Description`, `Color`, `Bike_Image`) VALUES
+(10, 'Honda', 'CB Hornet 2.0', 'Naked', 170000.00, '184cc', 'Petrol', 'Manual', '42km/l', '17bhp', '16.1Nm', 'Air', 'Disc', 'Monoshock', '142kg', '795mm', '12L', '126km/h', '3 Years', 50, 'Aggressive naked streetfighter with digital instrumentation', 'Pearl Igneous Black',NULL);
 
 -- --------------------------------------------------------
 
@@ -180,6 +101,17 @@ CREATE TABLE `user_address` (
   `AddressID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `user_address`
+--
+
+INSERT INTO `user_address` (`UserID`, `AddressID`) VALUES
+(1, 1),
+(2, 2),
+(70, 3),
+(71, 4),
+(72, 5);
+
 -- --------------------------------------------------------
 
 --
@@ -191,6 +123,16 @@ CREATE TABLE `user_feedback` (
   `FeedbackID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `user_feedback`
+--
+
+INSERT INTO `user_feedback` (`UserID`, `FeedbackID`) VALUES
+(2, 1),
+(2, 2),
+(2, 3),
+(2, 4);
+
 -- --------------------------------------------------------
 
 --
@@ -201,6 +143,19 @@ CREATE TABLE `user_order` (
   `UserID` int(11) NOT NULL,
   `OrderID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `user_order`
+--
+
+INSERT INTO `user_order` (`UserID`, `OrderID`) VALUES
+(2, 34),
+(2, 35),
+(2, 36),
+(2, 37),
+(70, 40),
+(70, 41),
+(70, 42);
 
 --
 -- Indexes for dumped tables
@@ -300,49 +255,49 @@ ALTER TABLE `user_order`
 -- AUTO_INCREMENT for table `address`
 --
 ALTER TABLE `address`
-  MODIFY `AddressID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `AddressID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `bike`
 --
 ALTER TABLE `bike`
-  MODIFY `BikeID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `BikeID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `feedback`
 --
 ALTER TABLE `feedback`
-  MODIFY `FeedbackID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `FeedbackID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `order`
 --
 ALTER TABLE `order`
-  MODIFY `OrderID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `OrderID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- AUTO_INCREMENT for table `orderdetail`
 --
 ALTER TABLE `orderdetail`
-  MODIFY `OrderDetailID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `OrderDetailID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT for table `payment`
 --
 ALTER TABLE `payment`
-  MODIFY `PaymentID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `PaymentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT for table `sale`
 --
 ALTER TABLE `sale`
-  MODIFY `SaleID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `SaleID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
 
 --
 -- Constraints for dumped tables

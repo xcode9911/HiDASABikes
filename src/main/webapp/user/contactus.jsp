@@ -9,40 +9,10 @@
     <title>Contact Us - HIDASA Bikes</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #FF0B55;
-            --primary-dark: #CF0F47;
-            --secondary: #1A1A1A;
-            --accent: #FFD700;
-            --text-light: #FFFFFF;
-            --text-dark: #1A1A1A;
-            --background: #F5F5F5;
-            --card-bg: #FFFFFF;
-            --gradient-primary: linear-gradient(135deg, #FF0B55, #CF0F47);
-            --gradient-dark: linear-gradient(135deg, #1A1A1A, #333333);
-            --shadow-sm: 0 2px 4px rgba(0,0,0,0.1);
-            --shadow-md: 0 4px 8px rgba(0,0,0,0.12);
-            --shadow-lg: 0 8px 16px rgba(0,0,0,0.15);
-            --radius-sm: 4px;
-            --radius-md: 8px;
-            --radius-lg: 16px;
-            --header-height: 80px;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        body {
-            background: var(--background);
-            color: var(--text-dark);
-            line-height: 1.6;
-        }
-
+  
+   <style>
+   
+       
         .container {
             max-width: 1400px;
             margin: 0 auto;
@@ -50,31 +20,20 @@
         }
 
         /* Hero Section */
-        .hero {
+        .contacthero {
             height: 60vh;
             position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
-            background-image: url('${pageContext.request.contextPath}/assets/images/hidasa1.jpg');
+          background: url('${pageContext.request.contextPath}/assets/images/contactus.png') center center/cover no-repeat;
             background-size: cover;
             background-position: center;
             color: var(--text-light);
         }
 
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.7), rgba(0,0,0,0.4));
-            z-index: 1;
-        }
-
-        .hero-content {
+        .contact-hero-content {
             max-width: 800px;
             padding: 2rem;
             z-index: 2;
@@ -299,17 +258,14 @@
                 grid-template-columns: 1fr;
             }
         }
-    </style>
+   </style>
 </head>
 <body>
     <%@ include file="navigationBar.jsp" %>
 
     <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-content">
-            <h1 class="hero-title">Let's Talk. We're Just a Message Away.</h1>
-            <p class="hero-description">Whether it's a query, compliment, concern, or feedback – we value your voice.</p>
-        </div>
+    <section class="contacthero">
+
         <div class="scroll-down">
             <i class="fas fa-chevron-down"></i>
         </div>

@@ -17,8 +17,20 @@
 
       
 </head>
+
 <body>
     <%@ include file="navigationBar.jsp" %>
+
+    <!-- Error Message if any -->
+    <c:if test="${not empty error}">
+        <div class="error-container">
+            <div class="error-message">
+                <i class="fas fa-exclamation-triangle"></i>
+                <p>${error}</p>
+                <button class="close-error"><i class="fas fa-times"></i></button>
+            </div>
+        </div>
+    </c:if>
 
     <!-- Hero Section with Slider -->
     <section class="hero-slider">
@@ -30,7 +42,7 @@
                     <div class="slide-content">
                         <h1 class="slide-title">Unleash the Machine Within</h1>
                         <p class="slide-description">Experience the thrill of riding with our latest collection of premium bikes.</p>
-                        <a href="#featured-bikes" class="btn btn-primary">Explore Models</a>
+                        <a href="#featured-bikes" class="button button-primary">Explore Models</a>
                     </div>
                 </div>
                 
@@ -40,7 +52,7 @@
                     <div class="slide-content">
                         <h1 class="slide-title">Power Meets Precision</h1>
                         <p class="slide-description">Discover bikes engineered for the perfect balance of performance and control.</p>
-                        <a href="#featured-bikes" class="btn btn-primary">Explore Models</a>
+                        <a href="#featured-bikes" class="button button-primary">Explore Models</a>
                     </div>
                 </div>
                 
@@ -50,7 +62,7 @@
                     <div class="slide-content">
                         <h1 class="slide-title">Ride Beyond Limits</h1>
                         <p class="slide-description">Push boundaries with motorcycles designed for adventure and endurance.</p>
-                        <a href="#featured-bikes" class="btn btn-primary">Explore Models</a>
+                        <a href="#featured-bikes" class="button button-primary">Explore Models</a>
                     </div>
                 </div>
             </div>
@@ -95,37 +107,149 @@
             <h2 class="section-title">Featured Bikes</h2>
             <p class="section-subtitle">Discover our most popular models</p>
             <div class="bike-grid">
-                <div class="bike-card">
-                    <img src="${pageContext.request.contextPath}/assets/images/hidasa2.jpg" alt="Royal Enfield Classic 350" class="bike-image">
-                    <div class="bike-details">
-                        <div class="bike-brand">ROYAL ENFIELD</div>
-                        <h3 class="bike-name">Classic 350</h3>
-                        <div class="bike-specs">
-                            <div class="spec-item">
-                                <i class="fas fa-tachometer-alt"></i>
-                                <span>349cc</span>
+                <c:forEach var="bike" items="${featuredBikes}">
+                    <div class="bike-card">
+                        <c:choose>
+                            <c:when test="${not empty bike.base64Image}">
+                                <img src="data:image/jpeg;base64,${bike.base64Image}" alt="${bike.brandName} ${bike.modelName}" class="bike-image">
+                            </c:when>
+                            <c:otherwise>
+                                <img src="${pageContext.request.contextPath}/assets/images/hidasa${(bike.bikeId % 3) + 1}.jpg" alt="${bike.brandName} ${bike.modelName}" class="bike-image">
+                            </c:otherwise>
+                        </c:choose>
+                        <div class="bike-details">
+                            <div class="bike-brand">${bike.brandName}</div>
+                            <h3 class="bike-name">${bike.modelName}</h3>
+                            <div class="bike-specs">
+                                <c:if test="${not empty bike.engineCapacity}">
+                                    <div class="spec-item">
+                                        <i class="fas fa-tachometer-alt"></i>
+                                        <span>${bike.engineCapacity}</span>
+                                    </div>
+                                </c:if>
+                                <c:if test="${not empty bike.fuelType}">
+                                    <div class="spec-item">
+                                        <i class="fas fa-gas-pump"></i>
+                                        <span>${bike.fuelType}</span>
+                                    </div>
+                                </c:if>
+                                <c:if test="${not empty bike.mileage}">
+                                    <div class="spec-item">
+                                        <i class="fas fa-road"></i>
+                                        <span>${bike.mileage}</span>
+                                    </div>
+                                </c:if>
+                                <c:if test="${not empty bike.power}">
+                                    <div class="spec-item">
+                                        <i class="fas fa-bolt"></i>
+                                        <span>${bike.power}</span>
+                                    </div>
+                                </c:if>
                             </div>
-                            <div class="spec-item">
-                                <i class="fas fa-gas-pump"></i>
-                                <span>Petrol</span>
+                            <div class="bike-price">Rs. ${bike.formattedPrice}</div>
+                            <div class="bike-actions">
+                                <a href="${pageContext.request.contextPath}/bike?id=${bike.bikeId}" class="button button-primary">View Details</a>
+                                <a href="${pageContext.request.contextPath}/cart/add?id=${bike.bikeId}" class="button button-primary">Buy Now</a>
                             </div>
-                            <div class="spec-item">
-                                <i class="fas fa-road"></i>
-                                <span>35 kmpl</span>
-                            </div>
-                            <div class="spec-item">
-                                <i class="fas fa-bolt"></i>
-                                <span>20.2 bhp @ 6100 rpm</span>
-                            </div>
-                        </div>
-                        <div class="bike-price">Rs. 219,000.00</div>
-                        <div class="bike-actions">
-                            <a href="#" class="btn btn-primary">View Details</a>
-                            <a href="#" class="btn btn-primary">Buy Now</a>
                         </div>
                     </div>
-                </div>
-                <!-- Add more bike cards as needed -->
+                </c:forEach>
+                
+                <!-- Fallback if no bikes are found -->
+                <c:if test="${empty featuredBikes}">
+                    <div class="bike-card">
+                        <img src="${pageContext.request.contextPath}/assets/images/hidasa2.jpg" alt="Royal Enfield Classic 350" class="bike-image">
+                        <div class="bike-details">
+                            <div class="bike-brand">ROYAL ENFIELD</div>
+                            <h3 class="bike-name">Classic 350</h3>
+                            <div class="bike-specs">
+                                <div class="spec-item">
+                                    <i class="fas fa-tachometer-alt"></i>
+                                    <span>349cc</span>
+                                </div>
+                                <div class="spec-item">
+                                    <i class="fas fa-gas-pump"></i>
+                                    <span>Petrol</span>
+                                </div>
+                                <div class="spec-item">
+                                    <i class="fas fa-road"></i>
+                                    <span>35 kmpl</span>
+                                </div>
+                                <div class="spec-item">
+                                    <i class="fas fa-bolt"></i>
+                                    <span>20.2 bhp @ 6100 rpm</span>
+                                </div>
+                            </div>
+                            <div class="bike-price">Rs. 219,000.00</div>
+                            <div class="bike-actions">
+                                <a href="${pageContext.request.contextPath}/bike?id=1" class="button button-primary">View Details</a>
+                                <a href="${pageContext.request.contextPath}/cart/add?id=1" class="button button-primary">Buy Now</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bike-card">
+                        <img src="${pageContext.request.contextPath}/assets/images/hidasa1.jpg" alt="Yamaha FZ-S" class="bike-image">
+                        <div class="bike-details">
+                            <div class="bike-brand">YAMAHA</div>
+                            <h3 class="bike-name">FZ-S</h3>
+                            <div class="bike-specs">
+                                <div class="spec-item">
+                                    <i class="fas fa-tachometer-alt"></i>
+                                    <span>149cc</span>
+                                </div>
+                                <div class="spec-item">
+                                    <i class="fas fa-gas-pump"></i>
+                                    <span>Petrol</span>
+                                </div>
+                                <div class="spec-item">
+                                    <i class="fas fa-road"></i>
+                                    <span>45 kmpl</span>
+                                </div>
+                                <div class="spec-item">
+                                    <i class="fas fa-bolt"></i>
+                                    <span>12.4 bhp @ 7250 rpm</span>
+                                </div>
+                            </div>
+                            <div class="bike-price">Rs. 164,000.00</div>
+                            <div class="bike-actions">
+                                <a href="${pageContext.request.contextPath}/bike?id=2" class="button button-primary">View Details</a>
+                                <a href="${pageContext.request.contextPath}/cart/add?id=2" class="button button-primary">Buy Now</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bike-card">
+                        <img src="${pageContext.request.contextPath}/assets/images/hidasa3.jpg" alt="Bajaj Pulsar NS200" class="bike-image">
+                        <div class="bike-details">
+                            <div class="bike-brand">BAJAJ</div>
+                            <h3 class="bike-name">Pulsar NS200</h3>
+                            <div class="bike-specs">
+                                <div class="spec-item">
+                                    <i class="fas fa-tachometer-alt"></i>
+                                    <span>199.5cc</span>
+                                </div>
+                                <div class="spec-item">
+                                    <i class="fas fa-gas-pump"></i>
+                                    <span>Petrol</span>
+                                </div>
+                                <div class="spec-item">
+                                    <i class="fas fa-road"></i>
+                                    <span>40 kmpl</span>
+                                </div>
+                                <div class="spec-item">
+                                    <i class="fas fa-bolt"></i>
+                                    <span>24.5 bhp @ 9750 rpm</span>
+                                </div>
+                            </div>
+                            <div class="bike-price">Rs. 189,000.00</div>
+                            <div class="bike-actions">
+                                <a href="${pageContext.request.contextPath}/bike?id=3" class="button button-primary">View Details</a>
+                                <a href="${pageContext.request.contextPath}/cart/add?id=3" class="button button-primary">Buy Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </c:if>
             </div>
         </div>
     </section>
@@ -136,21 +260,60 @@
             <h2 class="section-title">Choose Your Ride</h2>
             <p class="section-subtitle">Find the perfect bike for your journey</p>
             <div class="ride-categories">
-                <div class="category-card">
-                    <i class="fas fa-road"></i>
-                    <h3>Cruiser</h3>
-                    <p>Laid-back Power</p>
-                </div>
-                <div class="category-card">
-                    <i class="fas fa-motorcycle"></i>
-                    <h3>Commuter</h3>
-                    <p>Smart, Efficient, Stylish</p>
-                </div>
-                <div class="category-card">
-                    <i class="fas fa-charging-station"></i>
-                    <h3>Electric</h3>
-                    <p>Clean, Quiet, Cool</p>
-                </div>
+                <c:if test="${not empty bikeTypes}">
+                    <c:forEach var="type" items="${bikeTypes}" varStatus="status">
+                        <a href="${pageContext.request.contextPath}/bikes?type=${type}" class="category-card">
+                            <!-- Use different icons based on the status count for variety -->
+                            <c:choose>
+                                <c:when test="${status.index % 3 == 0}">
+                                    <i class="fas fa-road"></i>
+                                </c:when>
+                                <c:when test="${status.index % 3 == 1}">
+                                    <i class="fas fa-motorcycle"></i>
+                                </c:when>
+                                <c:otherwise>
+                                    <i class="fas fa-charging-station"></i>
+                                </c:otherwise>
+                            </c:choose>
+                            <h3>${type}</h3>
+                            <p>${bikeTypeCounts[type]} Bikes</p>
+                        </a>
+                    </c:forEach>
+                </c:if>
+                
+                <!-- Fallback if no types are found -->
+                <c:if test="${empty bikeTypes}">
+                    <a href="${pageContext.request.contextPath}/bikes?type=Cruiser" class="category-card">
+                        <i class="fas fa-road"></i>
+                        <h3>Cruiser</h3>
+                        <p>Laid-back Power</p>
+                    </a>
+                    <a href="${pageContext.request.contextPath}/bikes?type=Commuter" class="category-card">
+                        <i class="fas fa-motorcycle"></i>
+                        <h3>Commuter</h3>
+                        <p>Smart, Efficient, Stylish</p>
+                    </a>
+                    <a href="${pageContext.request.contextPath}/bikes?type=Adventure" class="category-card">
+                        <i class="fas fa-mountain"></i>
+                        <h3>Adventure</h3>
+                        <p>Conquer Any Terrain</p>
+                    </a>
+                    <a href="${pageContext.request.contextPath}/bikes?type=Sport" class="category-card">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <h3>Sport</h3>
+                        <p>Pure Performance</p>
+                    </a>
+                    <a href="${pageContext.request.contextPath}/bikes?type=Naked" class="category-card">
+                        <i class="fas fa-bolt"></i>
+                        <h3>Naked</h3>
+                        <p>Raw Power & Style</p>
+                    </a>
+                    <a href="${pageContext.request.contextPath}/bikes?type=Electric" class="category-card">
+                        <i class="fas fa-charging-station"></i>
+                        <h3>Electric</h3>
+                        <p>Clean, Quiet, Cool</p>
+                    </a>
+                </c:if>
             </div>
         </div>
     </section>
@@ -161,13 +324,13 @@
             <div class="stats-grid">
                 <div class="stat-item">
                     <i class="fas fa-motorcycle"></i>
-                    <div class="stat-value">15,000+</div>
-                    <div class="stat-label">Bikes Sold</div>
+                    <div class="stat-value">${totalBikeCount > 0 ? totalBikeCount : '15,000+'}</div>
+                    <div class="stat-label">Bikes Available</div>
                 </div>
                 <div class="stat-item">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <div class="stat-value">75+</div>
-                    <div class="stat-label">Districts</div>
+                    <i class="fas fa-tags"></i>
+                    <div class="stat-value">${bikeTypes.size() > 0 ? bikeTypes.size() : '10+'}</div>
+                    <div class="stat-label">Categories</div>
                 </div>
                 <div class="stat-item">
                     <i class="fas fa-star"></i>
@@ -196,7 +359,7 @@
                     <h3>Our Story</h3>
                     <p>Founded in 2005, HIDASA Bikes has grown from a small workshop to Nepal's leading motorcycle manufacturer. Our commitment to quality, innovation, and customer satisfaction has made us the trusted choice for riders across the country.</p>
                     <p>We believe in creating bikes that not only perform exceptionally but also reflect the spirit of adventure and freedom that riding represents.</p>
-                    <a href="#" class="btn btn-primary">Learn More About Us</a>
+                    <a href="${pageContext.request.contextPath}/about" class="button button-primary">Learn More About Us</a>
                 </div>
             </div>
         </div>
@@ -231,12 +394,13 @@
                         <div class="form-group">
                             <textarea placeholder="Your Message" rows="5" required></textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary">Send Message</button>
+                        <button type="submit" class="button button-primary">Send Message</button>
                     </form>
                 </div>
             </div>
         </div>
     </section>
+      <%@ include file="footer.jsp" %>
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
@@ -272,8 +436,18 @@
             }
         });
         
-        // Handle cookies and personalization
+        // Handle error message dismissal
         document.addEventListener('DOMContentLoaded', function() {
+            const closeErrorBtn = document.querySelector('.close-error');
+            if (closeErrorBtn) {
+                closeErrorBtn.addEventListener('click', function() {
+                    const errorContainer = document.querySelector('.error-container');
+                    if (errorContainer) {
+                        errorContainer.style.display = 'none';
+                    }
+                });
+            }
+            
             // Function to get cookie value by name
             function getCookie(name) {
                 const value = `; ${document.cookie}`;

@@ -1,14 +1,14 @@
 package modal;
 
-import java.math.BigDecimal;
-import java.sql.Blob;
-
+/**
+ * Represents a bike in the system
+ */
 public class Bike {
     private int bikeId;
     private String brandName;
     private String modelName;
     private String type;
-    private BigDecimal price;
+    private double price;
     private String engineCapacity;
     private String fuelType;
     private String transmission;
@@ -26,42 +26,10 @@ public class Bike {
     private int stockQuantity;
     private String description;
     private String color;
-    private Blob bikeImage;
+    private byte[] bikeImage;
 
     // Default constructor
     public Bike() {
-    }
-
-    // Constructor with all fields
-    public Bike(int bikeId, String brandName, String modelName, String type, BigDecimal price,
-                String engineCapacity, String fuelType, String transmission, String mileage,
-                String power, String torque, String coolingSystem, String brakeType,
-                String suspensionType, String kerbWeight, String seatHeight, String fuelTankCapacity,
-                String topSpeed, String warrantyInfo, int stockQuantity, String description,
-                String color, Blob bikeImage) {
-        this.bikeId = bikeId;
-        this.brandName = brandName;
-        this.modelName = modelName;
-        this.type = type;
-        this.price = price;
-        this.engineCapacity = engineCapacity;
-        this.fuelType = fuelType;
-        this.transmission = transmission;
-        this.mileage = mileage;
-        this.power = power;
-        this.torque = torque;
-        this.coolingSystem = coolingSystem;
-        this.brakeType = brakeType;
-        this.suspensionType = suspensionType;
-        this.kerbWeight = kerbWeight;
-        this.seatHeight = seatHeight;
-        this.fuelTankCapacity = fuelTankCapacity;
-        this.topSpeed = topSpeed;
-        this.warrantyInfo = warrantyInfo;
-        this.stockQuantity = stockQuantity;
-        this.description = description;
-        this.color = color;
-        this.bikeImage = bikeImage;
     }
 
     // Getters and Setters
@@ -97,11 +65,11 @@ public class Bike {
         this.type = type;
     }
 
-    public BigDecimal getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
@@ -241,12 +209,25 @@ public class Bike {
         this.color = color;
     }
 
-    public Blob getBikeImage() {
+    public byte[] getBikeImage() {
         return bikeImage;
     }
 
-    public void setBikeImage(Blob bikeImage) {
+    public void setBikeImage(byte[] bikeImage) {
         this.bikeImage = bikeImage;
+    }
+
+    // Format price as string with commas
+    public String getFormattedPrice() {
+        return String.format("%,.2f", price);
+    }
+
+    // Get Base64 encoded image
+    public String getBase64Image() {
+        if (bikeImage != null) {
+            return java.util.Base64.getEncoder().encodeToString(bikeImage);
+        }
+        return null;
     }
 
     @Override

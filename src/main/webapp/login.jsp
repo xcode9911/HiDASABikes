@@ -44,10 +44,12 @@
         <div class="left-side">
             <!-- Login Welcome Content -->
             <div class="welcome-content">
-                <img src="${pageContext.request.contextPath}/assets/images/hidasalogo.png" alt="HIDASA Logo" style="max-width: 80%; margin-top: -200px;">
+                <a href="${pageContext.request.contextPath}/home">
+                    <img src="${pageContext.request.contextPath}/assets/images/hidasalogo.png" alt="HIDASA Logo" style="max-width: 80%; margin-top: -200px;">
+                </a>
                 <div class="welcome-text">
                     <h1>Welcome Back!<span>Ready to Ride?</span></h1>
-                    <a class="welcome-link" href="${pageContext.request.contextPath}/index.jsp">Register Now</a>
+                    <a class="welcome-link" href="${pageContext.request.contextPath}/register">Register Now</a>
                 </div>
             </div>
         </div>
@@ -129,7 +131,7 @@
                     </form>
                     
                     <div class="toggle-form">
-                        <p>Don't have an account?<a href="${pageContext.request.contextPath}/index.jsp">Register</a></p>
+                        <p>Don't have an account?<a href="${pageContext.request.contextPath}/register">Register</a></p>
                     </div>
                 </div>
             </div>
