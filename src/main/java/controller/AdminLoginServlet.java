@@ -2,7 +2,6 @@ package controller;
 
 import java.io.IOException;
 
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -35,8 +34,17 @@ public class AdminLoginServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// Redirect to admin login page
-		response.sendRedirect("admin/adminLogin.jsp");
+		// Check if already logged in
+		HttpSession session = request.getSession(false);
+		if (session != null && session.getAttribute("adminLoggedIn") != null && 
+			(Boolean)session.getAttribute("adminLoggedIn")) {
+			// Already logged in, redirect to dashboard
+			response.sendRedirect(request.getContextPath() + "/admin/dashboard.jsp");
+			return;
+		}
+		
+		// Not logged in, show login page
+		request.getRequestDispatcher("/admin/adminLogin.jsp").forward(request, response);
 	}
 
 	/**
@@ -76,7 +84,7 @@ public class AdminLoginServlet extends HttpServlet {
 			System.out.println("Admin login successful: " + username);
 			
 			// Redirect to admin dashboard
-			response.sendRedirect("${pageContext.request.contextPath}/../admin/dashboard.jsp");
+			response.sendRedirect(request.getContextPath() + "/admin/dashboard.jsp");
 		} else {
 			// Set error message
 			request.setAttribute("error", "Invalid username or password. Please try again.");
@@ -85,7 +93,7 @@ public class AdminLoginServlet extends HttpServlet {
 			System.out.println("Failed admin login attempt: " + username);
 			
 			// Forward back to login page with error
-			request.getRequestDispatcher("user/adminLogin.jsp").forward(request, response);
+			request.getRequestDispatcher("/admin/adminLogin.jsp").forward(request, response);
 		}
 	}
 	

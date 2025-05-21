@@ -87,5 +87,37 @@
             </div>
         </div>
     </div>
+
+    <!-- Success notification -->
+    <script>
+        function showSuccessMessage(message) {
+            // Implementation of showing a success message
+            console.log("Success: " + message);
+        }
+    </script>
+
+    <!-- Error notification -->
+    <script>
+        function showErrorMessage(message) {
+            // Implementation of showing an error message
+            console.log("Error: " + message);
+        }
+    </script>
+
+    <!-- Warning notification -->
+    <script>
+        function showWarningMessage(message) {
+            // Implementation of showing a warning message
+            console.log("Warning: " + message);
+        }
+    </script>
+
+    <!-- Info notification -->
+    <script>
+        function showInfoMessage(message) {
+            // Implementation of showing an info message
+            console.log("Info: " + message);
+        }
+    </script>
 </body>
 </html> 

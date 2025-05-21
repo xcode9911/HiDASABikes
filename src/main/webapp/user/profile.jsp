@@ -311,16 +311,7 @@
                             <i class="fas fa-lock"></i> Security
                         </a>
                     </li>
-                    <li class="profile-menu-item">
-                        <a href="#preferences" class="profile-menu-link" data-tab="preferences">
-                            <i class="fas fa-cog"></i> Preferences
-                        </a>
-                    </li>
-                    <li class="profile-menu-item">
-                        <a href="#billing" class="profile-menu-link" data-tab="billing">
-                            <i class="fas fa-credit-card"></i> Billing Information
-                        </a>
-                    </li>
+
                 </ul>
             </div>
 
@@ -362,10 +353,7 @@
                                 <label class="form-label">Phone Number</label>
                                 <input type="tel" class="form-control" name="phone" value="${user.phone != null ? user.phone : sessionScope.phone}">
                             </div>
-                            <div class="form-group">
-                                <label class="form-label">Date of Birth</label>
-                                <input type="date" class="form-control" name="dob" value="${sessionScope.dob}">
-                            </div>
+                      
                         </div>
                         
                         <!-- Address Information -->
@@ -429,72 +417,7 @@
                 </div>
 
                 <!-- Preferences Tab -->
-                <div id="preferences" class="tab-content">
-                    <h2 class="section-title">Preferences</h2>
-                    <div class="alert alert-success" id="preferencesSuccess" style="display: none;">Preferences updated successfully!</div>
-                    <div class="alert alert-danger" id="preferencesError" style="display: none;">Error updating preferences.</div>
-                    <form id="preferencesForm" action="${pageContext.request.contextPath}/profile" method="post">
-                        <input type="hidden" name="action" value="updatePreferences">
-                        <div class="form-group">
-                            <label class="form-label">Language</label>
-                            <select class="form-control" name="language">
-                                <option value="en">English</option>
-                                <option value="ne">Nepali</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Email Notifications</label>
-                            <div>
-                                <input type="checkbox" id="notifyOrders" name="notifications" value="orders">
-                                <label for="notifyOrders">Order Updates</label>
-                            </div>
-                            <div>
-                                <input type="checkbox" id="notifyPromotions" name="notifications" value="promotions">
-                                <label for="notifyPromotions">Promotions and Offers</label>
-                            </div>
-                            <div>
-                                <input type="checkbox" id="notifyNews" name="notifications" value="news">
-                                <label for="notifyNews">News and Updates</label>
-                            </div>
-                        </div>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-save"></i> Save Preferences
-                        </button>
-                    </form>
-                </div>
-
-                <!-- Billing Information Tab -->
-                <div id="billing" class="tab-content">
-                    <h2 class="section-title">Billing Information</h2>
-                    <div class="alert alert-success" id="billingSuccess" style="display: none;">Billing information updated successfully!</div>
-                    <div class="alert alert-danger" id="billingError" style="display: none;">Error updating billing information.</div>
-                    <form id="billingForm" action="${pageContext.request.contextPath}/profile" method="post">
-                        <input type="hidden" name="action" value="updateBilling">
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label class="form-label">Card Holder Name</label>
-                                <input type="text" class="form-control" name="cardName" required>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Card Number</label>
-                                <input type="text" class="form-control" name="cardNumber" required>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label class="form-label">Expiry Date</label>
-                                <input type="text" class="form-control" name="expiryDate" placeholder="MM/YY" required>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">CVV</label>
-                                <input type="text" class="form-control" name="cvv" required>
-                            </div>
-                        </div>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-credit-card"></i> Save Card
-                        </button>
-                    </form>
-                </div>
+               
             </div>
         </div>
     </div>

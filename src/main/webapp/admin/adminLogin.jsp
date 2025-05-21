@@ -54,7 +54,7 @@
         /* Left Side - Background Image */
         .background-side {
             flex: 1;
-            background-image: url('../images/bikehero.jpg');
+            background-image: url('../assets/images/bikehero.jpg');
             background-size: cover;
             background-position: center;
             position: relative;
@@ -343,7 +343,7 @@
         <div class="login-side">
             <div class="login-container">
                 <div class="login-header">
-                    <img src="../images/hidasalogo.png" alt="HIDASA Bikes Logo">
+                    <img src="../assets/images/hidasalogo.png" alt="HIDASA Bikes Logo">
                     <h2>Admin Login</h2>
                     <p>Admin access only. Please log in to manage the HIDASA Bike Inventory.</p>
                 </div>
@@ -355,7 +355,7 @@
                     </div>
                 <% } %>
                 
-                <form action="../AdminLoginServlet" method="post" id="loginForm">
+                <form action="${pageContext.request.contextPath}/AdminLoginServlet" method="post" id="loginForm">
                     <div class="form-group">
                         <label for="username">Username or Admin Email</label>
                         <i class="fas fa-user input-icon"></i>
