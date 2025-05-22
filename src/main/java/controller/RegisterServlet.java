@@ -19,6 +19,7 @@ import modal.Address;
 import dao.UserDAO;
 import dao.AddressDAO;
 import util.DatabaseUtil;
+import util.PasswordUtil;
 
 @WebServlet("/register")
 @MultipartConfig(
@@ -133,7 +134,7 @@ public class RegisterServlet extends HttpServlet {
             user.setName(name.trim());
             user.setEmail(email.trim().toLowerCase());
             user.setPhone(phone);
-            user.setPassword(password); // TODO: Add password hashing
+            user.setPassword(PasswordUtil.hashPassword(password)); // Hash the password before storing
             user.setProfileImage(profileImage);
             user.setRole("customer"); // Default role for new registrations
 

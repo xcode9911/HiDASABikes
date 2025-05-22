@@ -1,13 +1,14 @@
 package util;
 
 import java.sql.Connection;
+
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DatabaseUtil {
     private static final String URL = "jdbc:mysql://localhost:3306/hidasadb";
     private static final String USERNAME = "root";
-    private static final String PASSWORD = "0819";
+    private static final String PASSWORD = "";
     
     static {
         try {

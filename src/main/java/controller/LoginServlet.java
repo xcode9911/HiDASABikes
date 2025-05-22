@@ -17,6 +17,7 @@ import jakarta.servlet.http.HttpSession;
 import modal.User;
 import dao.UserDAO;
 import util.CookieUtil;
+import util.PasswordUtil;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
@@ -96,7 +97,13 @@ public class LoginServlet extends HttpServlet {
             
             User user = userDAO.getUserByEmail(email);
 
-            if (user != null && password.equals(user.getPassword())) {  // Password should be hashed in production!
+            if (user != null && PasswordUtil.verifyAndUpgradePassword(password, user.getPassword())) {
+                // If the password was unhashed, hash it now
+                if (!user.getPassword().startsWith("$2a$")) {  // BCrypt hashes start with $2a$
+                    user.setPassword(PasswordUtil.hashPassword(password));
+                    userDAO.updateUser(user);
+                }
+                
                 // Create session and add user info
                 HttpSession session = createUserSession(request, user);
                 

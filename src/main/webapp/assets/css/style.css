@@ -474,3 +474,12 @@ body {
         transform: translateX(-10px);
     }
 }
+
+.welcome-content a img {
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.welcome-content a img:hover {
+    transform: scale(1.05);
+}
