@@ -50,7 +50,7 @@
                     <i class="fas fa-box"></i>
                     <h3>Update Stock</h3>
                 </a>
-                <a href="sales.jsp" class="quick-action-card">
+                <a href="sales" class="quick-action-card">
                     <i class="fas fa-chart-bar"></i>
                     <h3>View Reports</h3>
                 </a>

@@ -21,6 +21,7 @@ import modal.Address;
 import dao.UserDAO;
 import dao.AddressDAO;
 import util.CookieUtil;
+import util.PasswordUtil;
 
 @WebServlet("/profile")
 @MultipartConfig(
@@ -351,13 +352,13 @@ public class ProfileServlet extends HttpServlet {
                 User user = userDAO.getUserById(userId);
                 
                 // Validate current password
-                if (!currentPassword.equals(user.getPassword())) {  // Should use proper password hashing in production
+                if (!PasswordUtil.verifyPassword(currentPassword, user.getPassword())) {
                     response.sendRedirect(request.getContextPath() + "/profile?error=wrong_password&tab=password");
                     return;
                 }
                 
                 // Update password
-                user.setPassword(newPassword);  // Should hash password in production
+                user.setPassword(PasswordUtil.hashPassword(newPassword));
                 boolean updated = userDAO.updateUser(user);
                 
                 if (updated) {

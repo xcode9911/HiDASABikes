@@ -53,10 +53,58 @@
         button[type="submit"]:hover {
             background: #0056b3;
         }
+        
+        /* Popup Styles */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            text-align: center;
+        }
+        
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+        }
+        
+        .popup button {
+            margin-top: 15px;
+            padding: 8px 20px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .popup button:hover {
+            background: #0056b3;
+        }
     </style>
 </head>
 <body>
     <jsp:include page="adminsidebar.jsp" />
+
+    <!-- Popup HTML -->
+    <div class="popup-overlay" id="popupOverlay"></div>
+    <div class="popup" id="successPopup">
+        <h3>Success!</h3>
+        <p>Bike has been added successfully.</p>
+        <button onclick="closePopup()">OK</button>
+    </div>
 
     <div class="container">
     
@@ -236,5 +284,37 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function showPopup() {
+            document.getElementById('popupOverlay').style.display = 'block';
+            document.getElementById('successPopup').style.display = 'block';
+        }
+
+        function closePopup() {
+            document.getElementById('popupOverlay').style.display = 'none';
+            document.getElementById('successPopup').style.display = 'none';
+        }
+
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            
+            fetch('../AdminDashboardServlet', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                showPopup();
+                this.reset(); // Reset form after successful submission
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while adding the bike. Please try again.');
+            });
+        });
+    </script>
 </body>
 </html> 

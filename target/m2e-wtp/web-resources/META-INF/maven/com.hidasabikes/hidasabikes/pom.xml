@@ -23,6 +23,13 @@
 	    <version>20230227</version>
 		</dependency>
 
+		<!-- BCrypt for password hashing -->
+		<dependency>
+			<groupId>org.mindrot</groupId>
+			<artifactId>jbcrypt</artifactId>
+			<version>0.4</version>
+		</dependency>
+
 		    <!-- JSTL API -->
 		<dependency>
 		    <groupId>jakarta.servlet.jsp.jstl</groupId>
